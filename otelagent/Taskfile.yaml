@@ -1,0 +1,115 @@
+version: "3"
+
+vars:
+  IMAGE_NAME: ipedrazas/otelagent
+  IMAGE_TAG: '{{default "latest" .IMAGE_TAG}}'
+
+tasks:
+  # --- Local ---
+
+  install:
+    desc: Install dependencies
+    cmds:
+      - npm ci
+    sources:
+      - package.json
+      - package-lock.json
+    generates:
+      - node_modules/.package-lock.json
+
+  build:
+    desc: Compile TypeScript
+    deps: [install]
+    cmds:
+      - npm run build
+    sources:
+      - src/**/*.ts
+      - tsconfig.json
+    generates:
+      - dist/**/*.js
+
+  lint:
+    desc: Run linter
+    deps: [install]
+    cmds:
+      - npm run lint
+
+  test:
+    desc: Run tests
+    deps: [install]
+    cmds:
+      - npm test
+
+  dev:
+    desc: Run CLI in dev mode (pass args after --)
+    deps: [install]
+    cmds:
+      - npx tsx src/cli/index.ts {{.CLI_ARGS}}
+
+  serve:
+    desc: Start webhook server in dev mode
+    deps: [install]
+    cmds:
+      - npx tsx src/cli/index.ts serve {{.CLI_ARGS}}
+
+  check:
+    desc: Run lint + test
+    cmds:
+      - task: lint
+      - task: test
+
+  clean:
+    desc: Remove build artifacts
+    cmds:
+      - rm -rf dist
+
+  # --- Docker ---
+
+  docker:build:
+    desc: Build Docker image
+    cmds:
+      - docker build -t {{.IMAGE_NAME}}:{{.IMAGE_TAG}} .
+
+  docker:lint:
+    desc: Lint Dockerfile with hadolint
+    cmds:
+      - docker run --rm -i hadolint/hadolint < Dockerfile
+
+  docker:run:analyze:
+    desc: Run analysis in Docker (set REPO_PATH and optionally MODE)
+    vars:
+      MODE: '{{default "report" .MODE}}'
+    requires:
+      vars: [REPO_PATH]
+    cmds:
+      - >-
+        docker run --rm
+        -e ANTHROPIC_API_KEY
+        -v {{.REPO_PATH}}:/repo:ro
+        {{.IMAGE_NAME}}:{{.IMAGE_TAG}}
+        analyze --repo /repo --mode {{.MODE}}
+
+  docker:run:serve:
+    desc: Run webhook server in Docker
+    cmds:
+      - >-
+        docker run --rm
+        -e ANTHROPIC_API_KEY
+        -e GITHUB_TOKEN
+        -e WEBHOOK_SECRET
+        -e ALLOWED_REPOS
+        -p ${PORT:-3000}:3000
+        {{.IMAGE_NAME}}:{{.IMAGE_TAG}}
+
+  docker:test:
+    desc: Build and run tests inside Docker
+    cmds:
+      - >-
+        docker build --target builder -t {{.IMAGE_NAME}}:test .
+      - >-
+        docker run --rm {{.IMAGE_NAME}}:test npm test
+
+  docker:clean:
+    desc: Remove Docker image
+    cmds:
+      - docker rmi {{.IMAGE_NAME}}:{{.IMAGE_TAG}} 2>/dev/null || true

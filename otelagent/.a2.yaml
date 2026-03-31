@@ -1,0 +1,28 @@
+language:
+  explicit: [typescript] # Override auto-detection
+
+files:
+  required:
+    - README.md
+#     - LICENSE
+#
+coverage:
+  threshold: 40
+#
+checks:
+  disabled:
+    - common:e2e
+    - devops:*
+    - common:integration
+    - common:tracing
+    - common:errors
+    - common:shutdown
+    - common:migrations
+    - common:retry
+    - common:duplication
+    - common:contributing
+    - common:changelog
+    - common:api_docs
+    - common:dockerfile
+    - common:license
+    - common:metrics

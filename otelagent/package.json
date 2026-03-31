@@ -1,0 +1,36 @@
+{
+  "name": "otelagent",
+  "version": "0.1.0",
+  "description": "AI agent that analyses and instruments application observability",
+  "type": "module",
+  "bin": {
+    "otelagent": "./dist/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/cli/index.ts",
+    "start": "node dist/cli/index.js",
+    "lint": "eslint src/",
+    "test": "vitest run"
+  },
+  "keywords": [
+    "observability",
+    "opentelemetry",
+    "prometheus",
+    "tracing",
+    "instrumentation"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.2.88",
+    "commander": "^14.0.3",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "eslint": "^10.1.0",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.2"
+  }
+}
