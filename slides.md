@@ -1091,3 +1091,16 @@ class: 'text-center'
 Questions?
 
 ![QR Code to the repo](./qrcode.png)
+
+<style>
+p {
+    font-size: xxx-large;
+}
+img{
+    display: block;
+    margin: auto;
+    width: 40%;
+    padding-top: 70px;
+    
+}
+</style>
