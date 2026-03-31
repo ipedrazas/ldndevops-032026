@@ -76,6 +76,8 @@ Ivan Pedrazas, ivan@andcake.dev
 
 ex-Kubernetes ~~architect~~, ex-Docker, exhausted...
 
+[Tavon.ai](https://tavon.ai/)
+
 <style>
 s{
     color: gray;
@@ -91,7 +93,6 @@ s{
 (Not in this order.)
 
 <br>
-    
 I also make (and sell) Jeans 🤷‍♂️
 
 ::right::
@@ -197,23 +198,16 @@ img{
 
 ---
 transition: slide-left
+class: 'text-center'
 ---
 
 ![taken](./taken.webp)
 
 <style>
-p {
-    opacity: 1
-}
-
-h1 + p { opacity: 1 }
-
 img {
     display: block;
     margin: auto;
     width: 70%;
-    opacity: 1;
-    
 }
 </style>
 
