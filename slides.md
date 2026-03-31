@@ -1081,7 +1081,7 @@ https://github.com/ipedrazas/pulse
 
 https://github.com/ipedrazas/a2
 
-https://github.com/ipedrazas/pulse-gateway
+https://sli.dev/
 
 ---
 transition: slide-up
@@ -1089,3 +1089,5 @@ class: 'text-center'
 ---
 
 Questions?
+
+![QR Code to the repo](./qrcode.png)
